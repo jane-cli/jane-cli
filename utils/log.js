@@ -1,4 +1,5 @@
 let chalk = require('chalk')
+let env = process.env.NODE_ENV
 let color = {
   error:chalk.red,
   info:chalk.grey,
@@ -42,5 +43,25 @@ module.exports = {
       return color.error(v)
     })
     log.apply(this,arr)
+  },
+  debugLog(){
+    if (env !== 'development') return;
+    log.apply(this,['[DEBUG]', ...arguments])
+  },
+  debugWarn(){
+    if (env !== 'development') return;
+    let r = Array.prototype.slice.call(arguments)
+    let arr = r.map(v=>{
+        return color.warn(v)
+    })
+    log.apply(this,['[DEBUG]', ...arr])
+  },
+  debugError(){
+    if (env !== 'development') return;
+    let r = Array.prototype.slice.call(arguments)
+    let arr = r.map(v=>{
+        return color.error(v)
+    })
+    log.apply(this, ['[DEBUG]', ...arr])
   }
 }
